@@ -1,0 +1,331 @@
+﻿<UserControl x:Class="RestaurantManagementApp.Views.RestaurantMenuView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RestaurantManagementApp.Views"
+             xmlns:vm="clr-namespace:RestaurantManagementApp.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800"
+             >
+
+    <UserControl.Resources>
+
+        <Style x:Key="NavButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="15,5"/>
+            <Setter Property="Background" Value="#2c3e50"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                      Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#34495e"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1a2530"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <LinearGradientBrush x:Key="BlueGradientBackground" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#E6F2FF" Offset="0.0"/>
+            <GradientStop Color="#FFFFFF" Offset="1.0"/>
+        </LinearGradientBrush>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <Style x:Key="MenuItemCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#e0e0e0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="5" Opacity="0.2" Color="Gray"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style  x:Key="CategoryHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#2c3e50"/>
+        </Style>
+
+        <Style x:Key="MenuItemNameStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#2c3e50"/>
+        </Style>
+
+        <Style x:Key="MenuItemDescriptionStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Foreground" Value="#7f8c8d"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+        </Style>
+
+
+        <Style x:Key="BadgeStyle" TargetType="Border">
+            <Setter Property="Background" Value="#ecf0f1"/>
+            <Setter Property="BorderBrush" Value="#bdc3c7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="6,2"/>
+            <Setter Property="Margin" Value="3"/>
+        </Style>
+
+        <Style x:Key="BadgeTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Foreground" Value="#7f8c8d"/>
+        </Style>
+
+        <Style x:Key="PriceTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="#27ae60"/>
+        </Style>
+
+        <Style x:Key="AddToCartButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#2980b9"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="0,5,0,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#3498db"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#bdc3c7"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FilterButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#ecf0f1"/>
+            <Setter Property="Foreground" Value="#2c3e50"/>
+            <Setter Property="BorderBrush" Value="#bdc3c7"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#dfe6e9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="White" BorderBrush="#e0e0e0" BorderThickness="3,3,3,3" Padding="15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Fillter without: " VerticalAlignment="Center" Margin="0,0,10,0" Style="{StaticResource MenuItemNameStyle}"/>
+                    <ComboBox Width="150" ItemsSource="{Binding Allergens}"
+                              DisplayMemberPath="Name"
+                               SelectedValuePath="Id"
+                                SelectedValue="{Binding SelectedAllergenId}"/>
+                </StackPanel>
+
+                
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Content="Reset filters" Style="{StaticResource NavButtonStyle}" 
+                            Command="{Binding CLearFiltersCommand}"/>
+                </StackPanel>
+
+            </Grid>
+        </Border>
+        
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden"
+              HorizontalScrollBarVisibility="Disabled"
+              PanningMode="VerticalOnly"
+              CanContentScroll="True">
+            <ItemsControl ItemsSource="{Binding Categories}" Margin="10">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource CategoryHeaderStyle}"/>
+                            <TextBlock Text="{Binding Description}" Foreground="#7f8c8d" Margin="5,0,5,10" 
+                                       Visibility="{Binding Description, Converter={StaticResource StringNotEmptyToVisibilityConverter}}"/>
+                            <ItemsControl ItemsSource="{Binding Items}" Margin="0,0,0,20">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+
+                                        <Border Style="{StaticResource MenuItemCardStyle}" Width="450" Height="400" Margin="8" HorizontalAlignment="Stretch">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="160"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                   
+                                                </Grid.RowDefinitions>
+                                               
+
+                                                <StackPanel Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                                    <Border Width="150" Height="200" 
+                                                    BorderBrush="AliceBlue" 
+                                                     BorderThickness="1" 
+                                                    CornerRadius="20"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+                                                        <Image Source="{Binding Images, Converter={StaticResource FirstImagePathConverter}}"
+                                                                 Stretch="UniformToFill"
+                                                                Width="150"
+                                                                 Height="200"
+                                                             
+                                                               
+                                                                RenderOptions.BitmapScalingMode="HighQuality" >
+                                                            
+                                                            <Image.Clip>
+                                                                <RectangleGeometry RadiusX="20" RadiusY="20" Rect="0,0,150,200"/>
+                                                            </Image.Clip>
+                                                        </Image>
+                                                    </Border>
+                                                </StackPanel>
+
+
+
+                                                <Grid Grid.Row="1">
+                                                    <TextBlock Text="{Binding Name}" Style="{StaticResource MenuItemNameStyle}"/>
+                                                    <TextBlock Text="Out of stock" HorizontalAlignment="Right" Foreground="#e74c3c" FontWeight="SemiBold"
+                                                               Visibility="{Binding IsAvailable, Converter={StaticResource BoolToVisibilityInverseConverter}}"/>
+                                                </Grid>
+
+                                                
+                                                <TextBlock Grid.Row="2" Text="{Binding Description}" Style="{StaticResource MenuItemDescriptionStyle}"/>
+
+                                               
+                                                <StackPanel Grid.Row="3" Orientation="Vertical" Margin="0,5">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="Portion size" FontWeight="SemiBold" Margin="0,0,5,0"/>
+                                                        <TextBlock>
+                                                            <Run Text="{Binding PortionQuantity}"/>
+                                                            <Run Text=" "/>
+                                                            <Run Text="{Binding MeasurementUnit}"/>
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </StackPanel>
+
+                                                
+                                                <StackPanel Grid.Row="4" Margin="0,5,0,0">
+                                                    <TextBlock Text="Allergens: " FontWeight="SemiBold" Margin="0,0,5,0"
+                                                        Visibility="{Binding Allergens.Count, Converter={StaticResource NumberGreaterThanZeroToVisibilityConverter}}"/>
+                                                    <ItemsControl ItemsSource="{Binding Allergens}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel/>
+                                                            </ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border Style="{StaticResource BadgeStyle}">
+                                                                    <TextBlock Text="{Binding}" Style="{StaticResource BadgeTextStyle}"/>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+
+                                               
+                                                <Grid Grid.Row="5" Margin="0,10,0,0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <TextBlock Grid.Column="0" Text="{Binding PriceText}" Style="{StaticResource PriceTextStyle}"
+                                                               VerticalAlignment="Center"/>
+
+
+
+                                                    <Button Grid.Column="1" Content="Add to cart" Style="{StaticResource NavButtonStyle}" 
+                                                IsEnabled="{Binding IsAvailable}"
+                                                Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"
+                                                 CommandParameter="{Binding}"/>
+                                                </Grid>
+                                            </Grid>
+                                        </Border>
+
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+
+                            </ItemsControl>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>
